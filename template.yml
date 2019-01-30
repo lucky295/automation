@@ -449,6 +449,7 @@ Resources:
               - Action:
                   - iam:GetRole
                   - iam:PutRolePolicy
+                  - iam:Get*
                 Resource:
                   - '*'
                 Effect: Allow
