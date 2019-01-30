@@ -1,0 +1,869 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "IAM Roles and policies for {{lc_project_name}}",
+    "Parameters": {
+        "IAMNamespace": {
+            "Description": "Namespace for IAM users, policies, etc.",
+            "Type": "String",
+            "Default": "/"
+        }
+    },
+    "Resources": {
+        "{{uc_environment_tag}}{{uc_project_name}}ProfilePolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "ManagedPolicyName": "{{uc_environment_tag}}-{{uc_project_name}}-Profile",
+                "Description": "Policy for {{uc_project_name}} profile",
+                "Path": {
+                    "Ref": "IAMNamespace"
+                },
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents",
+                                "logs:FilterLogEvents",
+                                "logs:DescribeLogStreams",
+                                "ecs:CreateCluster",
+                                "ecs:DeregisterContainerInstance",
+                                "ecs:DiscoverPollEndpoint",
+                                "ecs:Poll",
+                                "ecs:RegisterContainerInstance",
+                                "ecs:StartTelemetrySession",
+                                "ecs:Submit*",
+                                "ecs:UpdateService",
+                                "ecs:DescribeServices",
+                                "ec2:DescribeInstances",
+                                "ec2:TerminateInstances",
+                                "ec2:RunInstances",
+                                "ecr:BatchCheckLayerAvailability",
+                                "ecr:BatchGetImage",
+                                "ecr:GetAuthorizationToken",
+                                "ecr:GetDownloadUrlForLayer",
+                                "events:ListRuleNamesByTarget",
+                                "events:ListTargetsByRule",
+                                "events:PutRule",
+                                "events:PutTargets",
+                                "events:RemoveTargets",
+                                "events:DeleteRule",
+                                "events:DescribeRule",
+                                "acm:DescribeCertificate",
+                                "acm:GetCertificate",
+                                "acm:ListCertificates",
+                                "acm:ListTagsForCertificate",
+                                "cloudfront:*",
+                                "cloudwatch:DescribeAlarms",
+                                "cloudwatch:PutMetricAlarm",
+                                "cloudwatch:GetMetricStatistics",
+                                "elasticloadbalancing:DescribeLoadBalancers",
+                                "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
+                                "elasticloadbalancing:DeregisterTargets",
+                                "elasticloadbalancing:Describe*",
+                                "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+                                "elasticloadbalancing:RegisterTargets",
+                                "iam:ListServerCertificates",
+                                "sns:ListSubscriptionsByTopic",
+                                "sns:ListTopics",
+                                "waf:GetWebACL",
+                                "waf:ListWebACLs",
+                                "route53:Get*",
+                                "route53:List*",
+                                "route53:ListResourceRecordSets",
+                                "route53:ChangeResourceRecordSets",
+                                "elasticloadbalancing:Describe*",
+                                "rds:DescribeDBInstances"
+                            ],
+                            "Resource": "*"
+                        },
+                        {
+                            "Effect": "Allow",
+                            "NotAction": [
+                                "s3:CreateBucket",
+                                "s3:DeleteBucket",
+                                "s3:*BucketPolicy",
+                                "s3:*BucketACL",
+                                "s3:*BucketWebsite",
+                                "s3:*BucketReplicationConfiguration"
+                            ],
+                            "Resource": [
+                                "arn:aws:s3:::{{lc_environment_tag}}-{{lc_project_name}}",
+                                "arn:aws:s3:::{{lc_environment_tag}}-{{lc_project_name}}/*"
+                            ]
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "lambda:InvokeFunction",
+                                "lambda:TagResource",
+                                "lambda:CreateFunction",
+                                "lambda:DeleteFunction",
+                                "lambda:GetFunction",
+                                "lambda:GetPolicy",
+                                "lambda:AddPermission",
+                                "lambda:RemovePermission",
+                                "lambda:ListFunctions",
+                                "lambda:ListVersionsByFunction",
+                                "lambda:ListAliases",
+                                "lambda:GetFunctionConfiguration",
+                                "lambda:ListEventSourceMapping",
+                                "lambda:*"
+                            ],
+                            "Resource": [
+                                "*"
+                            ]
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "iam:GetRole",
+                                "iam:PassRole"
+                            ],
+                            "Resource": [
+                                "arn:aws:iam::{{account}}:role/{{uc_environment_tag}}-{{uc_project_name}}-Profile",
+                                "arn:aws:iam::{{account}}:role/{{uc_environment_tag}}-{{uc_project_name}}"
+                            ]
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "ec2:DescribeSecurityGroups",
+                                "ec2:DescribeSubnets",
+                                "ec2:DescribeVpcs",
+                                "ec2:CreateSecurityGroup",
+                                "ec2:DeleteSecurityGroup",
+                                "ec2:CreateTags",
+                                "ec2:AuthorizeSecurityGroupIngress"
+                            ],
+                            "Resource": [
+                                "*"
+                            ]
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "apigateway:DELETE",
+                                "apigateway:GET",
+                                "apigateway:PATCH",
+                                "apigateway:POST",
+                                "apigateway:PUT"
+                            ],
+                            "Resource": [
+                                "*"
+                            ]
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "cloudformation:DescribeStackResources",
+                                "cloudformation:DescribeStacks",
+                                "cloudformation:ListStackResources",
+                                "cloudformation:UpdateStack",
+                                "cloudformation:CreateStack",
+                                "cloudformation:DeleteStack",
+                                "cloudformation:ListStackResources",
+                                "cloudformation:UpdateStack",
+                                "cloudformation:ValidateTempate",
+                                "cloudformation:SignalResource"
+                            ],
+                            "Resource": [
+                                "*"
+                            ]
+                        },
+                        {
+                            "Action": [
+                                "sqs:*"
+                            ],
+                            "Effect": "Allow",
+                            "Resource": "*"
+                        }
+                    ]
+                }
+            }
+        },
+        "{{uc_environment_tag}}{{uc_project_name}}Policy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "ManagedPolicyName": "{{uc_environment_tag}}-{{uc_project_name}}",
+                "Description": "Policy for {{uc_project_name}}",
+                "Path": {
+                    "Ref": "IAMNamespace"
+                },
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "ssm:GetParameters",
+                                "ssm:ListDocuments",
+                                "ssm:ListDocumentsVersions",
+                                "ssm:DescribeDocument",
+                                "ssm:GetDocument",
+                                "ssm:DescribeInstanceInformation",
+                                "ssm:DescribeDocumentParameters",
+                                "ssm:DescribeInstanceProperties",
+                                "ssm:DescribeParameters",
+                                "ssm:PutParameter",
+                                "ssm:GetParameters",
+                                "ssm:DeleteParameter"
+                            ],
+                            "Resource": [
+                                "arn:aws:ssm:us-east-1:{{account}}:parameter/{{lc_project_name}}-*"
+                            ]
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": "sts:AssumeRole",
+                            "Resource": [
+                                "arn:aws:iam::*:role/{{uc_environment_tag}}-{{uc_project_name}}",
+                                "arn:aws:iam::*:role/{{uc_environment_tag}}-{{uc_project_name}}/*"
+                            ]
+                        },
+                        {
+                            "Effect": "Allow",
+                            "NotAction": [
+                                "s3:CreateBucket",
+                                "s3:DeleteBucket",
+                                "s3:*BucketPolicy",
+                                "s3:*BucketACL",
+                                "s3:*BucketWebsite",
+                                "s3:*BucketReplicationConfiguration"
+                            ],
+                            "Resource": [
+                                "arn:aws:s3:::{{lc_environment_tag}}-{{lc_project_name}}",
+                                "arn:aws:s3:::{{lc_environment_tag}}-{{lc_project_name}}/*"
+                            ]
+                        },
+                        {
+                            "Action": "ecr:*",
+                            "Effect": "Allow",
+                            "Resource": "*"
+                        },
+                        {
+                            "Sid": "{{cc_environment_tag}}IsaiaCFN",
+                            "Action": "cloudformation:*",
+                            "Effect": "Allow",
+                            "Resource": [
+                                "arn:aws:cloudformation:us-east-1:{{account}}:stack/{{uc_environment_tag}}-{{uc_project_name}}*",
+                                "arn:aws:cloudformation:us-east-1:{{account}}:stack/{{lc_environment_tag}}-{{lc_project_name}}*"
+                            ],
+                            "Condition": {
+                                "ArnNotEquals": {
+                                    "cloudformation:StackPolicyUrl": []
+                                }
+                            }
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "autoscaling:*",
+                                "batch:*",
+                                "cloudformation:*",
+                                "cloudwatch:Describe*",
+                                "cloudwatch:DeleteAlarms",
+                                "cloudwatch:DescribeAlarmHistory",
+                                "cloudwatch:DescribeAlarms",
+                                "cloudwatch:DescribeAlarmsForMetric",
+                                "cloudwatch:GetMetricStatistics",
+                                "cloudwatch:ListMetrics",
+                                "cloudwatch:Describe*",
+                                "cloudwatch:Get*",
+                                "cloudwatch:List*",
+                                "cloudwatch:PutMetricAlarm",
+                                "logs:Get*",
+                                "logs:Describe*",
+                                "logs:TestMetricFilter",
+                                "logs:FilterLogEvents",
+                                "sns:*",
+                                "sqs:*",
+                                "ec2:*",
+                                "dynamodb:*",
+                                "apigateway:*",
+                                "rds:*",
+                                "route53:Get*",
+                                "route53:List*",
+                                "route53:ListResourceRecordSets",
+                                "route53:ChangeResourceRecordSets",
+                                "elasticloadbalancing:Describe*",
+                                "s3:ListAllMyBuckets",
+                                "s3:GetBucketLocation",
+                                "iam:ListRoles",
+                                "iam:ListInstanceProfiles",
+                                "lambda:Functions",
+                                "lambda:CreateFunction",
+                                "iam:PassRole",
+                                "lambda:*",
+                                "ecs:CreateService",
+                                "ecs:DeleteAttributes",
+                                "ecs:DeleteService",
+                                "ecs:DeregisterContainerInstance",
+                                "ecs:DeregisterTaskDefinition",
+                                "ecs:Describe*",
+                                "ecs:DiscoverPollEndpoint",
+                                "ecs:List*",
+                                "ecs:PutAttributes",
+                                "ecs:RegisterTaskDefinition",
+                                "ecs:RunTask",
+                                "ecs:StartTask",
+                                "ecs:StopTask",
+                                "ecs:SubmitTaskStateChange",
+                                "ecs:UpdateService",
+                                "elasticmapreduce:*",
+                                "events:*",
+                                "acm:DescribeCertificate",
+                                "acm:GetCertificate",
+                                "acm:ListCertificates",
+                                "acm:ListTagsForCertificate",
+                                "cloudfront:*",
+                                "cloudwatch:DescribeAlarms",
+                                "cloudwatch:PutMetricAlarm",
+                                "cloudwatch:GetMetricStatistics",
+                                "elasticloadbalancing:DescribeLoadBalancers",
+                                "iam:ListServerCertificates",
+                                "states:*",
+                                "sns:ListSubscriptionsByTopic",
+                                "sns:ListTopics",
+                                "waf:GetWebACL",
+                                "waf:ListWebACLs",
+                                "rds:DescribeDBInstances",
+                                "kms:ListAliases",
+                                "events:ListRules",
+                                "support:*"
+                            ],
+                            "Resource": "*"
+                        },
+                        {
+                            "Effect": "Deny",
+                            "Action": [
+                                "ec2:AcceptVpcPeeringConnection",
+                                "ec2:AllocateAddress",
+                                "ec2:AssociateAddress",
+                                "ec2:AssociateDhcpOptions",
+                                "ec2:AssociateRouteTable",
+                                "ec2:AttachClassicLinkVpc",
+                                "ec2:AttachInternetGateway",
+                                "ec2:AttachNetworkInterface",
+                                "ec2:AttachVpnGateway",
+                                "ec2:CreateCustomerGateway",
+                                "ec2:CreateDhcpOptions",
+                                "ec2:CreateFlowLogs",
+                                "ec2:CreateInternetGateway",
+                                "ec2:CreateNatGateway",
+                                "ec2:CreateNetworkAcl",
+                                "ec2:CreateNetworkAcl",
+                                "ec2:CreateNetworkAclEntry",
+                                "ec2:CreateNetworkInterface",
+                                "ec2:CreateRoute",
+                                "ec2:CreateRouteTable",
+                                "ec2:CreateSubnet",
+                                "ec2:CreateVpc",
+                                "ec2:CreateVpcEndpoint",
+                                "ec2:CreateVpcPeeringConnection",
+                                "ec2:CreateVpnConnection",
+                                "ec2:CreateVpnConnectionRoute",
+                                "ec2:CreateVpnGateway",
+                                "ec2:DeleteCustomerGateway",
+                                "ec2:DeleteDhcpOptions",
+                                "ec2:DeleteFlowLogs",
+                                "ec2:DeleteInternetGateway",
+                                "ec2:DeleteNatGateway",
+                                "ec2:DeleteNetworkAcl",
+                                "ec2:DeleteNetworkAclEntry",
+                                "ec2:DeleteNetworkInterface",
+                                "ec2:DeleteRoute",
+                                "ec2:DeleteRouteTable",
+                                "ec2:DeleteSubnet",
+                                "ec2:DeleteTags",
+                                "ec2:DeleteVpc",
+                                "ec2:DeleteVpcEndpoints",
+                                "ec2:DeleteVpcPeeringConnection",
+                                "ec2:DeleteVpnConnection",
+                                "ec2:DeleteVpnConnectionRoute",
+                                "ec2:DeleteVpnGateway",
+                                "ec2:DetachClassicLinkVpc",
+                                "ec2:DetachInternetGateway",
+                                "ec2:DetachNetworkInterface",
+                                "ec2:DetachVpnGateway",
+                                "ec2:DisableVgwRoutePropagation",
+                                "ec2:DisableVpcClassicLink",
+                                "ec2:DisassociateAddress",
+                                "ec2:DisassociateRouteTable",
+                                "ec2:EnableVgwRoutePropagation",
+                                "ec2:EnableVpcClassicLink",
+                                "ec2:ModifyNetworkInterfaceAttribute",
+                                "ec2:ModifySubnetAttribute",
+                                "ec2:ModifyVpcAttribute",
+                                "ec2:ModifyVpcEndpoint",
+                                "ec2:MoveAddressToVpc",
+                                "ec2:RejectVpcPeeringConnection",
+                                "ec2:ReleaseAddress",
+                                "ec2:ReplaceNetworkAclAssociation",
+                                "ec2:ReplaceNetworkAclEntry",
+                                "ec2:ReplaceRoute",
+                                "ec2:ReplaceRouteTableAssociation",
+                                "ec2:ResetNetworkInterfaceAttribute",
+                                "ec2:RestoreAddressToClassic",
+                                "ec2:RevokeSecurityGroupIngress",
+                                "ec2:UnassignPrivateIpAddresses",
+                                "support:*"
+                            ],
+                            "Resource": "*"
+                        }
+                    ]
+                }
+            }
+        },
+        "{{uc_environment_tag}}{{cc_project_name}}ProfileRole": {
+            "DependsOn": "{{uc_environment_tag}}{{uc_project_name}}ProfilePolicy",
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": "{{uc_environment_tag}}-{{uc_project_name}}-Profile",
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "events.amazonaws.com",
+                                    "lambda.amazonaws.com",
+                                    "application-autoscaling.amazonaws.com",
+                                    "apigateway.amazonaws.com",
+                                    "ec2.amazonaws.com",
+                                    "lambda.amazonaws.com",
+                                    "ecs.amazonaws.com",
+                                    "ecs-tasks.amazonaws.com",
+                                    "ssm.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                },
+                "ManagedPolicyArns": [
+                    "arn:aws:iam::{{account}}:policy/{{uc_environment_tag}}-{{uc_project_name}}-Profile",
+                    "arn:aws:iam::aws:policy/AmazonSQSFullAccess"
+                ],
+                "Policies": [
+                    {
+                        "PolicyName": "ZappaPermissions",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Action": [
+                                        "logs:*"
+                                    ],
+                                    "Resource": "arn:aws:logs:*:*:*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "iam:Get*",
+                                        "iam:PutRolePolicy",
+                                        "iam:Update*",
+                                        "iam:Delete"
+                                    ],
+                                    "Resource": [
+                                        "*"
+                                    ],
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "lambda:InvokeFunction",
+                                        "lambda:AddPermission",
+                                        "lambda:CreateFunction",
+                                        "lambda:DeleteFunction",
+                                        "lambda:GetFunction",
+                                        "lambda:ListVersionsByFunction",
+                                        "lambda:UpdateFunctionCode",
+                                        "lambda:UpdateFunctionConfiguration"
+                                    ],
+                                    "Resource": [
+                                        "*"
+                                    ],
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "ec2:AttachNetworkInterface",
+                                        "ec2:CreateNetworkInterface",
+                                        "ec2:DeleteNetworkInterface",
+                                        "ec2:DescribeInstances",
+                                        "ec2:DescribeNetworkInterfaces",
+                                        "ec2:DetachNetworkInterface",
+                                        "ec2:ModifyNetworkInterfaceAttribute",
+                                        "ec2:ResetNetworkInterfaceAttribute"
+                                    ],
+                                    "Resource": "*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "s3:*"
+                                    ],
+                                    "Resource": "arn:aws:s3:::*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "kinesis:*"
+                                    ],
+                                    "Resource": "arn:aws:kinesis:*:*:*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "sns:*"
+                                    ],
+                                    "Resource": "arn:aws:sns:*:*:*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "sqs:*"
+                                    ],
+                                    "Resource": "arn:aws:sqs:*:*:*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "dynamodb:*"
+                                    ],
+                                    "Resource": "arn:aws:dynamodb:*:*:*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "events:ListRuleNamesByTarget",
+                                        "events:PutTargets"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:events:us-east-1:{{account}}:rule/*"
+                                    ],
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "events:PutRule",
+                                        "events:PutTargets"
+                                    ],
+                                    "Resource": "*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "iam:GetRole",
+                                        "iam:PutRolePolicy"
+                                    ],
+                                    "Resource": [
+                                        "*"
+                                    ],
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "iam:PassRole"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:iam::{{account}}:role/{{uc_environment_tag}}-{{uc_project_name}}-Profile"
+                                    ],
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "apigateway:DELETE",
+                                        "apigateway:GET",
+                                        "apigateway:PATCH",
+                                        "apigateway:POST",
+                                        "apigateway:PUT"
+                                    ],
+                                    "Resource": "*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "route53:*"
+                                    ],
+                                    "Resource": "*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "cloudformation:DescribeStackResource"
+                                    ],
+                                    "Resource": "*",
+                                    "Effect": "Allow"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "PolicyName": "LambdaBasicExecution",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": "logs:CreateLogGroup",
+                                    "Resource": "arn:aws:logs:us-east-1:{{account}}:*"
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:logs:us-east-1:{{account}}:log-group:/aws/lambda/{{lc_environment_tag}}_{{lc_project_name}}_scaling:*",
+                                        "arn:aws:logs:us-east-1:{{account}}:log-group:/aws/lambda/{{lc_environment_tag}}_{{lc_project_name}}_submission:*"
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "PolicyName": "S3-RO-ut-io-cicd",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "s3:List*",
+                                        "s3:Get*"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:s3:::ut-io-cicd",
+                                        "arn:aws:s3:::ut-io-cicd/*"
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "PolicyName": "Assume-Codepipeline",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "sts:AssumeRole"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:iam::{{account}}:role/CodepipelineCodebuildRole",
+                                        "arn:aws:sts::{{account}}:assumed-role/CodepipelineCodebuildRole*",
+                                        "arn:aws:iam::{{account}}:role/{{uc_environment_tag}}-{{uc_project_name}}-Profile",
+                                        "arn:aws:sts::{{account}}:assumed-role/{{uc_environment_tag}}-{{uc_project_name}}-Profile*"
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "{{uc_environment_tag}}{{cc_project_name}}Role": {
+            "DependsOn": "{{uc_environment_tag}}{{uc_project_name}}Policy",
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": "{{uc_environment_tag}}-{{uc_project_name}}",
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "AWS": [
+                                    "arn:aws:iam::{{utility_account}}:root"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                },
+                "ManagedPolicyArns": [
+                    "arn:aws:iam::{{account}}:policy/{{uc_environment_tag}}-{{uc_project_name}}"
+                ],
+                "Policies": [
+                    {
+                        "PolicyName": "ZappaPermissions",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Action": [
+                                        "logs:*"
+                                    ],
+                                    "Resource": "arn:aws:logs:*:*:*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "iam:Get*",
+                                        "iam:PutRolePolicy",
+                                        "iam:Update*",
+                                        "iam:Delete"
+                                    ],
+                                    "Resource": [
+                                        "*"
+                                    ],
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "lambda:InvokeFunction",
+                                        "lambda:AddPermission",
+                                        "lambda:CreateFunction",
+                                        "lambda:DeleteFunction",
+                                        "lambda:GetFunction",
+                                        "lambda:ListVersionsByFunction",
+                                        "lambda:UpdateFunctionCode",
+                                        "lambda:UpdateFunctionConfiguration"
+                                    ],
+                                    "Resource": [
+                                        "*"
+                                    ],
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "ec2:AttachNetworkInterface",
+                                        "ec2:CreateNetworkInterface",
+                                        "ec2:DeleteNetworkInterface",
+                                        "ec2:DescribeInstances",
+                                        "ec2:DescribeNetworkInterfaces",
+                                        "ec2:DetachNetworkInterface",
+                                        "ec2:ModifyNetworkInterfaceAttribute",
+                                        "ec2:ResetNetworkInterfaceAttribute"
+                                    ],
+                                    "Resource": "*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "s3:*"
+                                    ],
+                                    "Resource": "arn:aws:s3:::*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "kinesis:*"
+                                    ],
+                                    "Resource": "arn:aws:kinesis:*:*:*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "sns:*"
+                                    ],
+                                    "Resource": "arn:aws:sns:*:*:*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "sqs:*"
+                                    ],
+                                    "Resource": "arn:aws:sqs:*:*:*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "dynamodb:*"
+                                    ],
+                                    "Resource": "arn:aws:dynamodb:*:*:*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "events:ListRuleNamesByTarget",
+                                        "events:PutTargets"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:events:us-east-1:{{account}}:rule/*"
+                                    ],
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "events:PutRule",
+                                        "events:PutTargets"
+                                    ],
+                                    "Resource": "*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "iam:GetRole",
+                                        "iam:PutRolePolicy"
+                                    ],
+                                    "Resource": [
+                                        "*"
+                                    ],
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "iam:PassRole"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:iam::{{account}}:role/{{uc_environment_tag}}-{{uc_project_name}}-Profile"
+                                    ],
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "apigateway:DELETE",
+                                        "apigateway:GET",
+                                        "apigateway:PATCH",
+                                        "apigateway:POST",
+                                        "apigateway:PUT"
+                                    ],
+                                    "Resource": "*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "route53:*"
+                                    ],
+                                    "Resource": "*",
+                                    "Effect": "Allow"
+                                },
+                                {
+                                    "Action": [
+                                        "cloudformation:DescribeStackResource"
+                                    ],
+                                    "Resource": "*",
+                                    "Effect": "Allow"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "{{uc_environment_tag}}{{uc_project_name}}Profile": {
+            "Type": "AWS::IAM::InstanceProfile",
+            "Properties": {
+                "Path": "/",
+                "Roles": [
+                    {
+                        "Ref": "{{uc_environment_tag}}{{cc_project_name}}ProfileRole"
+                    }
+                ],
+                "InstanceProfileName": "{{uc_environment_tag}}{{uc_project_name}}Profile"
+            }
+        }
+    }
+}
