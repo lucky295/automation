@@ -1,6 +1,8 @@
 
 version - 2
 
+version -3 
+
 This is an automation process that to push changes to IAM roles and it's related polices.
 
 cd $workdir
