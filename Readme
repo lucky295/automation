@@ -3,8 +3,6 @@ This is an automation process that to push changes to IAM roles and it's related
 
 cd $workdir
 
-git checkout master  
-
 git fetch
 
 
