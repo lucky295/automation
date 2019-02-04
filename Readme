@@ -1,7 +1,5 @@
 
-version - 2
-
-version -3 
+version - 1
 
 This is an automation process that to push changes to IAM roles and it's related polices.
 
@@ -9,4 +7,5 @@ cd $workdir
 
 git fetch
 
+stackility upsert -i config/config.ini
 
